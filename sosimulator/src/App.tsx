@@ -1,6 +1,7 @@
 import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./App.css";
+import Graphic from "./components/Graphic";
 import ProcessCard from "./components/ProcessCard";
 
 export interface IProcess {
@@ -17,6 +18,7 @@ function App() {
   const [algorithm, setAlgorithm] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [processes, setProcesses] = useState<IProcess[]>([]);
+  const [graphic, setGraphic] = useState(false);
 
   useEffect(() => {
     if (
@@ -46,6 +48,14 @@ function App() {
     }
     setProcesses(newProcesses);
   }, [processNumber]);
+
+  if (graphic) {
+    return (
+      <div className="App">
+        <Graphic />
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -81,7 +91,9 @@ function App() {
       {processes.map((process, i) => (
         <ProcessCard process={process} setProcesses={setProcesses} index={i} />
       ))}
-      <Button disabled={btnDisabled}>Iniciar</Button>
+      <Button disabled={btnDisabled} onClick={() => setGraphic(true)}>
+        Iniciar
+      </Button>
     </div>
   );
 }
