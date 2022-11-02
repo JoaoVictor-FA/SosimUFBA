@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./App.css";
 import ProcessCard from "./components/ProcessCard";
@@ -14,6 +14,7 @@ function App() {
   const [processNumber, setProcessNumber] = useState(0);
   const [quantum, setQuantum] = useState(0);
   const [overload, setOverload] = useState(0);
+  const [algorithm, setAlgorithm] = useState("");
   const [processes, setProcesses] = useState<IProcess[]>([]);
 
   useEffect(() => {
@@ -49,6 +50,16 @@ function App() {
         value={processNumber}
         onChange={(e: any) => setProcessNumber(e.target.value)}
       />
+      <InputLabel>Algoritmo</InputLabel>
+      <Select
+        value={algorithm}
+        onChange={(e: any) => setAlgorithm(e.target.value)}
+      >
+        <MenuItem value="fifo">FIFO</MenuItem>
+        <MenuItem value="sjf">SJF</MenuItem>
+        <MenuItem value="rr">Round Robin</MenuItem>
+        <MenuItem value="edf">EDF</MenuItem>
+      </Select>
       {processes.map((process) => (
         <ProcessCard process={process} />
       ))}
