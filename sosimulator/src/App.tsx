@@ -1,34 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import "./App.css";
+import ProcessCard from "./components/ProcessCard";
+
+export interface IProcess {
+  processNumber: number;
+  arrivalTime: number;
+  executionTime: number;
+  deadline: number;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [processNumber, setProcessNumber] = useState(0);
+  const [quantum, setQuantum] = useState(0);
+  const [overload, setOverload] = useState(0);
+  const [processes, setProcesses] = useState<IProcess[]>([]);
+
+  useEffect(() => {
+    const newProcesses: IProcess[] = [];
+    for (let i = 0; i < processNumber; i++) {
+      newProcesses.push({
+        processNumber: i + 1,
+        arrivalTime: 0,
+        executionTime: 0,
+        deadline: 0,
+      });
+    }
+    setProcesses(newProcesses);
+  }, [processNumber]);
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <TextField
+        type="number"
+        label="Quantum"
+        value={quantum}
+        onChange={(e: any) => setQuantum(e.target.value)}
+      />
+      <TextField
+        type="number"
+        label="Sobrecarga"
+        value={overload}
+        onChange={(e: any) => setOverload(e.target.value)}
+      />
+      <TextField
+        type="number"
+        label="Quantidade de processos"
+        value={processNumber}
+        onChange={(e: any) => setProcessNumber(e.target.value)}
+      />
+      {processes.map((process) => (
+        <ProcessCard process={process} />
+      ))}
+      <button>Iniciar</button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
