@@ -17,15 +17,13 @@ export default function ProcessCard({ process, setProcesses, index }: Props) {
         label="Tempo de chegada"
         value={process.arrivalTime}
         onChange={(e: any) => {
-          setProcesses((prev: IProcess[]) =>
-            [
-              ...prev.filter((_, i) => i !== index),
-              {
-                ...prev[index],
-                arrivalTime: e.target.value,
-              },
-            ].sort((a, b) => a.processNumber - b.processNumber)
-          );
+          setProcesses((prev: IProcess[]) => [
+            ...prev.filter((_, i) => i !== index),
+            {
+              ...prev[index],
+              arrivalTime: +e.target.value,
+            },
+          ]);
         }}
       />
       <TextField
@@ -33,15 +31,13 @@ export default function ProcessCard({ process, setProcesses, index }: Props) {
         label="Tempo de execução"
         value={process.executionTime}
         onChange={(e: any) => {
-          setProcesses((prev: IProcess[]) =>
-            [
-              ...prev.filter((_, i) => i !== index),
-              {
-                ...prev[index],
-                executionTime: e.target.value,
-              },
-            ].sort((a, b) => a.processNumber - b.processNumber)
-          );
+          setProcesses((prev: IProcess[]) => [
+            ...prev.filter((_, i) => i !== index),
+            {
+              ...prev[index],
+              executionTime: +e.target.value,
+            },
+          ]);
         }}
       />
       <TextField
@@ -49,15 +45,13 @@ export default function ProcessCard({ process, setProcesses, index }: Props) {
         label="Deadline"
         value={process.deadline}
         onChange={(e: any) => {
-          setProcesses((prev: IProcess[]) =>
-            [
-              ...prev.filter((_, i) => i !== index),
-              {
-                ...prev[index],
-                deadline: e.target.value,
-              },
-            ].sort((a, b) => a.processNumber - b.processNumber)
-          );
+          setProcesses((prev: IProcess[]) => [
+            ...prev.filter((_, i) => i !== index),
+            {
+              ...prev[index],
+              deadline: +e.target.value,
+            },
+          ]);
         }}
       />
     </div>
