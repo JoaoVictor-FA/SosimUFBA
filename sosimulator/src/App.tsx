@@ -1,4 +1,4 @@
-import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./App.css";
 import ProcessCard from "./components/ProcessCard";
@@ -15,7 +15,24 @@ function App() {
   const [quantum, setQuantum] = useState(0);
   const [overload, setOverload] = useState(0);
   const [algorithm, setAlgorithm] = useState("");
+  const [btnDisabled, setBtnDisabled] = useState(true);
   const [processes, setProcesses] = useState<IProcess[]>([]);
+
+  useEffect(() => {
+    if (
+      processNumber > 0 &&
+      quantum > 0 &&
+      overload > 0 &&
+      algorithm !== "" &&
+      processes.find(
+        (p) => p.arrivalTime === 0 || p.deadline === 0 || p.executionTime === 0
+      ) == undefined
+    ) {
+      setBtnDisabled(false);
+    } else if (!btnDisabled) {
+      setBtnDisabled(true);
+    }
+  }, [processes, processNumber, quantum, overload, algorithm]);
 
   useEffect(() => {
     const newProcesses: IProcess[] = [];
@@ -54,16 +71,17 @@ function App() {
       <Select
         value={algorithm}
         onChange={(e: any) => setAlgorithm(e.target.value)}
+        fullWidth
       >
         <MenuItem value="fifo">FIFO</MenuItem>
         <MenuItem value="sjf">SJF</MenuItem>
         <MenuItem value="rr">Round Robin</MenuItem>
         <MenuItem value="edf">EDF</MenuItem>
       </Select>
-      {processes.map((process) => (
-        <ProcessCard process={process} />
+      {processes.map((process, i) => (
+        <ProcessCard process={process} setProcesses={setProcesses} index={i} />
       ))}
-      <button>Iniciar</button>
+      <Button disabled={btnDisabled}>Iniciar</Button>
     </div>
   );
 }
