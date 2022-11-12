@@ -5,11 +5,17 @@ import "./App.css";
 import Graphic from "./components/Graphic";
 import ProcessCard from "./components/ProcessCard";
 
+export interface Interval{
+  start: number | undefined;
+  end: number | undefined;
+}
 export interface IProcess {
   processNumber: number;
   arrivalTime: number;
   executionTime: number;
   deadline: number;
+  remainingTime: number;
+  intervals: Interval[];
 }
 
 function App() {
@@ -30,8 +36,8 @@ function App() {
         res = fifo(processes);
         arr = [];
         res.result.forEach((r: any, i: number) => {
-          arr.push({
-            processNumber: i + 1,
+            arr.push({
+                processNumber: i + 1,
             result: Array.from(Array(r.end).keys())
               .fill(0, 0, r.waitTime)
               .fill(2, r.waitTime, r.start)
@@ -56,8 +62,10 @@ function App() {
       case "edf":
         setData(edf(processes, quantum, overload));
         break;
-      case "roundRobin":
-        setData(roundRobin(processes, quantum, overload));
+      case "rr":
+        res = roundRobin(processes, quantum, overload)
+        console.log(res)
+        res.result.map(result => arr.push(result))
         break;
     }
     setData({
