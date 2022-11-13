@@ -71,8 +71,52 @@ function App() {
         break;
       case "rr":
         res = roundRobin(processes, quantum, overload);
-        console.log(res);
-        res.result.map((result) => arr.push(result));
+        console.log("res", res);
+        res.result.forEach((r: any, i: number) => {
+          const notProcessedPositions: number[] = [];
+          const firstProcessedPosition = r.intervals[0].start;
+          const processedPositions: number[] = [];
+
+          r.intervals.forEach((interval: Interval, i: number) => {
+            if (i < r.intervals.length - 1) {
+              if (r.intervals[i + 1].start !== interval.end) {
+                const diff = r.intervals[i + 1].start - interval.end;
+                notProcessedPositions.push(
+                  ...Array.from(Array(diff).keys()).map((n) => n + interval.end)
+                );
+              }
+            }
+          });
+          for (
+            let i = firstProcessedPosition;
+            i < r.intervals[r.intervals.length - 1].end;
+            i++
+          ) {
+            if (!notProcessedPositions.includes(i)) {
+              processedPositions.push(i);
+            }
+          }
+
+          const result = Array.from(
+            Array(r.intervals[r.intervals.length - 1].end)
+          ).fill(0);
+
+          if (r.arrivalTime < firstProcessedPosition) {
+            result.fill(2, r.arrivalTime, firstProcessedPosition);
+          }
+
+          processedPositions.forEach((p: number) => {
+            result[p] = 1;
+          });
+          notProcessedPositions.forEach((p: number) => {
+            result[p] = 2;
+          });
+          arr.push({
+            processNumber: i + 1,
+            result,
+          });
+        });
+
         break;
     }
     setData({

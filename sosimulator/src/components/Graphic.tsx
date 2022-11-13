@@ -1,5 +1,3 @@
-import { IProcess } from "../App";
-
 function getColor(id: number) {
   switch (id) {
     case 0:
@@ -10,14 +8,18 @@ function getColor(id: number) {
       return "green";
     case 2:
       //esperando
-      return "red";
+      return "yellow";
     case 3:
       //deadline
       return "black";
+    case 4:
+      //sobrecarga
+      return "red";
   }
 }
 
 export default function Graphic({ data, onClose }: any) {
+  console.log('data', data);
   return (
     <div
       style={{
