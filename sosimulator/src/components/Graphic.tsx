@@ -11,7 +11,7 @@ function getColor(id: number) {
       return "yellow";
     case 3:
       //deadline
-      return "black";
+      return "gray";
     case 4:
       //sobrecarga
       return "red";
@@ -19,7 +19,6 @@ function getColor(id: number) {
 }
 
 export default function Graphic({ data, onClose }: any) {
-  console.log('data', data);
   return (
     <div
       style={{

@@ -69,7 +69,73 @@ function App() {
 
         break;
       case "edf":
-        setData(edf(processes, quantum, overload));
+        res = edf(processes, quantum, overload);
+        res.result.forEach((r: any, i: number) => {
+          const notProcessedPositions: number[] = [];
+          const firstProcessedPosition = r.intervals[0].start;
+          const processedPositions: number[] = [];
+          const overloadPositions: number[] = [];
+          const deadlinePositions: number[] = [];
+          const trueDeadline = r.arrivalTime + r.deadline;
+
+          r.intervals.forEach((interval: Interval, i: number) => {
+            if (i < r.intervals.length - 1) {
+              if (r.intervals[i + 1].start !== interval.end) {
+                const diff = r.intervals[i + 1].start - interval.end;
+                notProcessedPositions.push(
+                  ...Array.from(Array(diff).keys()).map((n) => n + interval.end)
+                );
+              }
+            }
+          });
+          for (
+            let i = firstProcessedPosition;
+            i < r.intervals[r.intervals.length - 1].end;
+            i++
+          ) {
+            if (!notProcessedPositions.includes(i)) {
+              if (i >= trueDeadline) {
+                deadlinePositions.push(i);
+              } else {
+                processedPositions.push(i);
+              }
+            }
+          }
+
+          for (let interval of r.intervals) {
+            if (interval.end - interval.start > quantum) {
+              for (let i = +interval.start + +quantum; i < +interval.end; i++) {
+                overloadPositions.push(i);
+              }
+            }
+          }
+
+          const result = Array.from(
+            Array(r.intervals[r.intervals.length - 1].end)
+          ).fill(0);
+
+          if (r.arrivalTime < firstProcessedPosition) {
+            result.fill(2, r.arrivalTime, firstProcessedPosition);
+          }
+
+          processedPositions.forEach((p: number) => {
+            result[p] = 1;
+          });
+          notProcessedPositions.forEach((p: number) => {
+            result[p] = 2;
+          });
+          deadlinePositions.forEach((p: number) => {
+            result[p] = 3;
+          });
+          overloadPositions.forEach((p: number) => {
+            result[p] = 4;
+          });
+
+          arr.push({
+            processNumber: r.processNumber,
+            result,
+          });
+        });
         break;
       case "rr":
         res = roundRobin(processes, quantum, overload);
@@ -101,7 +167,7 @@ function App() {
 
           for (let interval of r.intervals) {
             if (interval.end - interval.start > quantum) {
-              for(let i = +interval.start + +quantum; i < +interval.end; i++) {
+              for (let i = +interval.start + +quantum; i < +interval.end; i++) {
                 overloadPositions.push(i);
               }
             }
