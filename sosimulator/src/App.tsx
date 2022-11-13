@@ -1,11 +1,18 @@
-import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Button,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { edf, fifo, roundRobin, sjf } from "./algorithms/algorithms";
 import "./App.css";
 import Graphic from "./components/Graphic";
 import ProcessCard from "./components/ProcessCard";
 
-export interface Interval{
+export interface Interval {
   start: number | undefined;
   end: number | undefined;
 }
@@ -36,8 +43,8 @@ function App() {
         res = fifo(processes);
         arr = [];
         res.result.forEach((r: any, i: number) => {
-            arr.push({
-                processNumber: i + 1,
+          arr.push({
+            processNumber: i + 1,
             result: Array.from(Array(r.end).keys())
               .fill(0, 0, r.waitTime)
               .fill(2, r.waitTime, r.start)
@@ -63,9 +70,9 @@ function App() {
         setData(edf(processes, quantum, overload));
         break;
       case "rr":
-        res = roundRobin(processes, quantum, overload)
-        console.log(res)
-        res.result.map(result => arr.push(result))
+        res = roundRobin(processes, quantum, overload);
+        console.log(res);
+        res.result.map((result) => arr.push(result));
         break;
     }
     setData({
@@ -112,35 +119,45 @@ function App() {
 
   return (
     <div className="App">
-      <TextField
-        type="number"
-        label="Quantum"
-        value={quantum}
-        onChange={(e: any) => setQuantum(e.target.value)}
-      />
-      <TextField
-        type="number"
-        label="Sobrecarga"
-        value={overload}
-        onChange={(e: any) => setOverload(e.target.value)}
-      />
-      <TextField
-        type="number"
-        label="Quantidade de processos"
-        value={processNumber}
-        onChange={(e: any) => setProcessNumber(e.target.value)}
-      />
-      <InputLabel>Algoritmo</InputLabel>
-      <Select
-        value={algorithm}
-        onChange={(e: any) => setAlgorithm(e.target.value)}
-        fullWidth
-      >
-        <MenuItem value="fifo">FIFO</MenuItem>
-        <MenuItem value="sjf">SJF</MenuItem>
-        <MenuItem value="rr">Round Robin</MenuItem>
-        <MenuItem value="edf">EDF</MenuItem>
-      </Select>
+      <Grid container spacing={1}>
+        <Grid item xs={3}>
+          <TextField
+            type="number"
+            label="Quantum"
+            value={quantum}
+            onChange={(e: any) => setQuantum(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <TextField
+            type="number"
+            label="Sobrecarga"
+            value={overload}
+            onChange={(e: any) => setOverload(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <TextField
+            type="number"
+            label="Quantidade de processos"
+            value={processNumber}
+            onChange={(e: any) => setProcessNumber(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={3} style={{ marginTop: "-24px" }}>
+          <InputLabel>Algoritmo</InputLabel>
+          <Select
+            value={algorithm}
+            onChange={(e: any) => setAlgorithm(e.target.value)}
+            fullWidth
+          >
+            <MenuItem value="fifo">FIFO</MenuItem>
+            <MenuItem value="sjf">SJF</MenuItem>
+            <MenuItem value="rr">Round Robin</MenuItem>
+            <MenuItem value="edf">EDF</MenuItem>
+          </Select>
+        </Grid>
+      </Grid>
       {processes
         .sort((a, b) => a.processNumber - b.processNumber)
         .map((process, i) => (
@@ -150,7 +167,11 @@ function App() {
             index={i}
           />
         ))}
-      <Button disabled={btnDisabled} onClick={handleClick}>
+      <Button
+        disabled={btnDisabled}
+        onClick={handleClick}
+        style={{ margin: "5px" }}
+      >
         Iniciar
       </Button>
     </div>
