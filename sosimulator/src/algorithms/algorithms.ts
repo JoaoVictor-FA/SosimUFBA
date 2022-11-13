@@ -156,6 +156,21 @@ export function roundRobin(
       processToBeQueued.intervals = [];
       queue.push(processToBeQueued);
     }
+
+    //Joga processos finalizados nos resultados ou processos com ciclos finalizados de volta para a fila
+    if(processExecuting && (processExecuting.remainingTime == 0 || quantumRemaining == 0 && overloadRemaining == 0)) {
+      quantumRemaining = quantum;
+      overloadRemaining = overload;
+      const interval = processExecuting.intervals.pop(); //Pega o último intervalo que ainda não foi finalizado
+      processExecuting.intervals.push({start: interval!.start,  end: time}) //Define o início e fim do último intervalo executado
+      if(processExecuting.remainingTime == 0){
+        result.push(processExecuting); //Envia para o array de resultados caso tenha executado completamente
+      } else if(processExecuting.remainingTime > 0){
+        queue.push(processExecuting); //Envia para a fila caso contrário
+      }
+      processExecuting = undefined;
+    }
+
     //Tira da fila para executar o processo apenas se não existir um processo sendo executado e que tenha processos na fila de espera
     if(!processExecuting && queue.length > 0){
       processExecuting = queue.shift()!;
@@ -173,19 +188,7 @@ export function roundRobin(
     } else if(overloadRemaining > 0 && processExecuting.remainingTime > 0){
       overloadRemaining--;
     } 
-
-    if(processExecuting.remainingTime == 0 || quantumRemaining == 0 && overloadRemaining == 0) {
-      quantumRemaining = quantum;
-      overloadRemaining = overload;
-      const interval = processExecuting.intervals.pop(); //Pega o último intervalo que ainda não foi finalizado
-      processExecuting.intervals.push({start: interval!.start,  end: time + 1}) //Define o início e fim do último intervalo executado
-      if(processExecuting.remainingTime == 0){
-        result.push(processExecuting); //Envia para o array de resultados caso tenha executado completamente
-      } else if(processExecuting.remainingTime > 0){
-        queue.push(processExecuting); //Envia para a fila caso contrário
-      }
-      processExecuting = undefined;
-    }
+    
     time++;
   }
 
@@ -195,70 +198,4 @@ export function roundRobin(
   const averageTurnaroundTime = turnaroundTime / result.length;
 
   return {result, averageTurnaroundTime}
-}
-
-export function roundRobin1(
-  processes: IProcess[],
-  quantum: number,
-  overload: number
-) {
-  const queue: IComputedProcess[] = [];
-  let time = 0;
-  const result = [];
-  let processesInQueue = 0;
-  while (processesInQueue < processes.length || queue.length > 0) {
-    while (
-      processesInQueue < processes.length &&
-      processes[processesInQueue].arrivalTime <= time
-    ) {
-      queue.push(
-        processes.map((process) => ({
-          ...process,
-          alreadyExecuted: 0,
-          totalOverloaded: 0,
-          waitingTime: 0,
-          startTime: 0,
-          endTime: 0,
-          turnAroundTime: 0,
-        }))[processesInQueue]
-      );
-      processesInQueue++;
-    }
-    if (queue.length > 0) {
-      const process = queue.shift();
-      if (!process) {
-        continue;
-      }
-      console.log(process)
-      process.waitingTime = time - +process.arrivalTime;
-      if (+process.startTime === 0 && time > 0) {
-        process.startTime = time;
-      }
-      if (+process.alreadyExecuted + quantum >= +process.executionTime) {
-        result.push({
-          process: +process.processNumber,
-          start: +process.startTime,
-          end: +time + +process.executionTime - +process.alreadyExecuted,
-          totalExecutionTime:
-            +process.executionTime +
-            +process.waitingTime +
-            +process.totalOverloaded,
-        });
-        time += +quantum;
-      } else {
-        process.alreadyExecuted += +quantum;
-        process.totalOverloaded += +overload;
-        time = time + +quantum + +overload;
-        queue.push(process);
-      }
-    }
-  }
-  const turnaroundTime = result.reduce(
-    (acc, curr) => acc + curr.totalExecutionTime,
-    0
-  );
-  const averageTurnaroundTime = turnaroundTime / processes.length;
-  console.log("round robin", result)
-  console.log("round robin", averageTurnaroundTime)
-  return { result, averageTurnaroundTime };
 }
