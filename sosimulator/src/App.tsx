@@ -22,6 +22,8 @@ export interface IProcess {
   executionTime: number;
   deadline: number;
   remainingTime: number;
+  timeFinished: number;
+  overDeadline: boolean;
   intervals: Interval[];
 }
 
