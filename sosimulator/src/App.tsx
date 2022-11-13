@@ -71,11 +71,11 @@ function App() {
         break;
       case "rr":
         res = roundRobin(processes, quantum, overload);
-        console.log("res", res);
         res.result.forEach((r: any, i: number) => {
           const notProcessedPositions: number[] = [];
           const firstProcessedPosition = r.intervals[0].start;
           const processedPositions: number[] = [];
+          const overloadPositions: number[] = [];
 
           r.intervals.forEach((interval: Interval, i: number) => {
             if (i < r.intervals.length - 1) {
@@ -97,6 +97,14 @@ function App() {
             }
           }
 
+          for (let interval of r.intervals) {
+            if (interval.end - interval.start > quantum) {
+              for(let i = +interval.start + +quantum; i < +interval.end; i++) {
+                overloadPositions.push(i);
+              }
+            }
+          }
+
           const result = Array.from(
             Array(r.intervals[r.intervals.length - 1].end)
           ).fill(0);
@@ -110,6 +118,9 @@ function App() {
           });
           notProcessedPositions.forEach((p: number) => {
             result[p] = 2;
+          });
+          overloadPositions.forEach((p: number) => {
+            result[p] = 4;
           });
           arr.push({
             processNumber: i + 1,
