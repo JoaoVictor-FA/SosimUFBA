@@ -46,7 +46,7 @@ function App() {
         arr = [];
         res.result.forEach((r: any, i: number) => {
           arr.push({
-            processNumber: i + 1,
+            processNumber: r.processNumber,
             result: Array.from(Array(r.end).keys())
               .fill(0, 0, r.waitTime)
               .fill(2, r.waitTime, r.start)
@@ -59,7 +59,7 @@ function App() {
         arr = [];
         res.result.forEach((r: any, i: number) => {
           arr.push({
-            processNumber: i + 1,
+            processNumber: r.processNumber,
             result: Array.from(Array(r.end).keys())
               .fill(0, 0, r.waitTime)
               .fill(2, r.waitTime, r.start)
@@ -125,7 +125,7 @@ function App() {
             result[p] = 4;
           });
           arr.push({
-            processNumber: i + 1,
+            processNumber: r.processNumber,
             result,
           });
         });
