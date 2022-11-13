@@ -29,7 +29,7 @@ export function fifo(processes: IProcess[]) {
       }
       let waitTime = time - process.arrivalTime;
       result.push({
-        process: +process.processNumber,
+        processNumber: +process.processNumber,
         start: +time,
         end: +time + +process.executionTime,
         totalExecutionTime: +process.executionTime + waitTime,
@@ -40,7 +40,7 @@ export function fifo(processes: IProcess[]) {
       time = +processes[i].arrivalTime;
     }
   }
-  result = result.sort((a, b) => a.process - b.process);
+  result = result.sort((a, b) => a.processNumber - b.processNumber);
   const turnaroundTime = result.reduce(
     (acc, curr) => acc + curr.totalExecutionTime,
     0
@@ -67,7 +67,7 @@ export function sjf(processes: IProcess[]) {
       }
       let waitTime = time - process.arrivalTime;
       result.push({
-        process: +process.processNumber,
+        processNumber: +process.processNumber,
         start: +time,
         end: +time + +process.executionTime,
         totalExecutionTime: +process.executionTime + waitTime,
@@ -78,7 +78,7 @@ export function sjf(processes: IProcess[]) {
       time = +processes[i].arrivalTime;
     }
   }
-  result = result.sort((a, b) => a.process - b.process);
+  result = result.sort((a, b) => a.processNumber - b.processNumber);
   const turnaroundTime = result.reduce(
     (acc, curr) => acc + curr.totalExecutionTime,
     0
