@@ -1,5 +1,17 @@
 import { IProcess } from "../App";
 
+interface IComputedProcess {
+  waitingTime: number;
+  startTime: number;
+  endTime: number;
+  turnAroundTime: number;
+  totalOverloaded: number;
+  executionTime: number;
+  processNumber: number;
+  alreadyExecuted: number;
+  arrivalTime: number;
+}
+
 export function fifo(processes: IProcess[]) {
   const queue = [];
   let time = 0;
@@ -38,7 +50,7 @@ export function fifo(processes: IProcess[]) {
 }
 
 export function sjf(processes: IProcess[]) {
-  const queue = [];
+  const queue: IComputedProcess[] = [];
   let time = 0;
   let result = [];
   let i = 0;
@@ -129,7 +141,7 @@ export function roundRobin(
   quantum: number,
   overload: number
 ) {
-  const queue = [];
+  const queue: IComputedProcess[] = [];
   let time = 0;
   const result = [];
   let processesInQueue = 0;
@@ -145,6 +157,8 @@ export function roundRobin(
           totalOverloaded: 0,
           waitingTime: 0,
           startTime: 0,
+          endTime: 0,
+          turnAroundTime: 0,
         }))[processesInQueue]
       );
       processesInQueue++;
