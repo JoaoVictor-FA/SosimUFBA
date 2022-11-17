@@ -1,4 +1,4 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 import { IProcess } from "../App";
 
@@ -59,6 +59,18 @@ export default function ProcessCard({ process, setProcesses, index }: Props) {
                 },
               ]);
             }}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <TextField
+            type="number"
+            label="Prioridade"
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <TextField
+            type="number"
+            label="Paginas Memoria"
           />
         </Grid>
       </Grid>

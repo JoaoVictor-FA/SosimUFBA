@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { edf, fifo, roundRobin, sjf } from "./algorithms/algorithms";
+import { memoryPush } from "./algorithms/memory";
 import "./App.css";
 import Graphic from "./components/Graphic";
 import ProcessCard from "./components/ProcessCard";
@@ -36,6 +37,20 @@ function App() {
   const [processes, setProcesses] = useState<IProcess[]>([]);
   const [data, setData] = useState<any>([]);
   const [graphic, setGraphic] = useState(false);
+
+  // let memoria: number[] = []
+  // memoria = memoryPush(10, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // memoria = memoryPush(9, memoria)
+  // console.log(memoria)
 
   const handleClick = () => {
     let res = null;
