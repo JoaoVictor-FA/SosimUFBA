@@ -26,6 +26,7 @@ export interface IProcess {
   timeFinished: number;
   overDeadline: boolean;
   intervals: Interval[];
+  memoryPages: number;
 }
 
 function App() {
@@ -242,6 +243,7 @@ function App() {
         arrivalTime: 0,
         executionTime: 0,
         deadline: 0,
+        memoryPages: 0,
       });
     }
     setProcesses(newProcesses);

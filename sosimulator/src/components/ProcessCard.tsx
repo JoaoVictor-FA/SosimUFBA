@@ -71,6 +71,15 @@ export default function ProcessCard({ process, setProcesses, index }: Props) {
           <TextField
             type="number"
             label="Paginas Memoria"
+            onChange={(e: any) => {
+              setProcesses((prev: IProcess[]) => [
+                ...prev.filter((_, i) => i !== index),
+                {
+                  ...prev[index],
+                  memoryPages: +e.target.value,
+                },
+              ]);
+            }}
           />
         </Grid>
       </Grid>
