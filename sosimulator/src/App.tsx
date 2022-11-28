@@ -4,11 +4,18 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { edf, fifo, roundRobin, sjf } from "./algorithms/algorithms";
-import { memoryPush } from "./algorithms/memory";
+import {
+  AlgorithmType,
+  edf,
+  fifo,
+  roundRobin,
+  sjf,
+} from "./algorithms/algorithms";
 import "./App.css";
 import Graphic from "./components/Graphic";
 import ProcessCard from "./components/ProcessCard";
@@ -26,41 +33,27 @@ export interface IProcess {
   timeFinished: number;
   overDeadline: boolean;
   intervals: Interval[];
-  memoryPages: number;
 }
 
 function App() {
   const [processNumber, setProcessNumber] = useState(0);
   const [quantum, setQuantum] = useState(0);
   const [overload, setOverload] = useState(0);
-  const [algorithm, setAlgorithm] = useState("");
+  const [algorithm, setAlgorithm] = useState<AlgorithmType>(AlgorithmType.fifo);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [processes, setProcesses] = useState<IProcess[]>([]);
   const [data, setData] = useState<any>([]);
   const [graphic, setGraphic] = useState(false);
-
-  // let memoria: number[] = []
-  // memoria = memoryPush(10, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // memoria = memoryPush(9, memoria)
-  // console.log(memoria)
+  const [animated, setAnimated] = useState(false);
 
   const handleClick = () => {
     let res = null;
     let arr = [];
     switch (algorithm) {
       case "fifo":
-        res = fifo(processes);
+        res = fifo(processes.sort((a, b) => a.arrivalTime - b.arrivalTime));
         arr = [];
-        res.result.forEach((r: any, i: number) => {
+        res.result.forEach((r: any) => {
           arr.push({
             processNumber: r.processNumber,
             result: Array.from(Array(r.end).keys())
@@ -73,7 +66,7 @@ function App() {
       case "sjf":
         res = sjf(processes);
         arr = [];
-        res.result.forEach((r: any, i: number) => {
+        res.result.forEach((r: any) => {
           arr.push({
             processNumber: r.processNumber,
             result: Array.from(Array(r.end).keys())
@@ -86,7 +79,7 @@ function App() {
         break;
       case "edf":
         res = edf(processes, quantum, overload);
-        res.result.forEach((r: any, i: number) => {
+        res.result.forEach((r: any) => {
           const notProcessedPositions: number[] = [];
           const firstProcessedPosition = r.intervals[0].start;
           const processedPositions: number[] = [];
@@ -224,9 +217,7 @@ function App() {
   useEffect(() => {
     if (
       processNumber > 0 &&
-      quantum > 0 &&
-      overload > 0 &&
-      algorithm !== "" &&
+      (["fifo", "sjf"].includes(algorithm) || (quantum > 0 && overload > 0)) &&
       processes.find((p) => p.executionTime === 0) == undefined
     ) {
       setBtnDisabled(false);
@@ -243,16 +234,30 @@ function App() {
         arrivalTime: 0,
         executionTime: 0,
         deadline: 0,
-        memoryPages: 0,
       });
     }
     setProcesses(newProcesses);
   }, [processNumber]);
 
+  useEffect(() => {
+    if (["fifo", "sjf"].includes(algorithm)) {
+      if (quantum > 0) {
+        setQuantum(0);
+      }
+      if (overload > 0) {
+        setOverload(0);
+      }
+    }
+  }, [algorithm]);
+
   if (graphic) {
     return (
       <div style={{ height: "90vh", width: "50vw" }}>
-        <Graphic data={data} onClose={() => setGraphic(false)} />
+        <Graphic
+          data={data}
+          onClose={() => setGraphic(false)}
+          animated={animated}
+        />
       </div>
     );
   }
@@ -260,12 +265,20 @@ function App() {
   return (
     <div className="App">
       <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Switch
+            checked={animated}
+            onChange={() => setAnimated((prev) => !prev)}
+          />
+          <Typography>Gráfico animado</Typography>
+        </Grid>
         <Grid item xs={3}>
           <TextField
             type="number"
             label="Quantum"
             value={quantum}
             onChange={(e: any) => setQuantum(e.target.value)}
+            disabled={["fifo", "sjf"].includes(algorithm)}
           />
         </Grid>
         <Grid item xs={3}>
@@ -274,6 +287,7 @@ function App() {
             label="Sobrecarga"
             value={overload}
             onChange={(e: any) => setOverload(e.target.value)}
+            disabled={["fifo", "sjf"].includes(algorithm)}
           />
         </Grid>
         <Grid item xs={3}>
@@ -288,7 +302,7 @@ function App() {
           <InputLabel>Algoritmo</InputLabel>
           <Select
             value={algorithm}
-            onChange={(e: any) => setAlgorithm(e.target.value)}
+            onChange={(e: any) => setAlgorithm(AlgorithmType[e.target.value])}
             fullWidth
           >
             <MenuItem value="fifo">FIFO</MenuItem>
@@ -305,6 +319,7 @@ function App() {
             process={process}
             setProcesses={setProcesses}
             index={i}
+            algorithmType={algorithm}
           />
         ))}
       <Button

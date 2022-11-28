@@ -1,14 +1,21 @@
-import { Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
+import { AlgorithmType } from "../algorithms/algorithms";
 import { IProcess } from "../App";
 
 interface Props {
   process: IProcess;
   setProcesses: Dispatch<SetStateAction<IProcess[]>>;
   index: number;
+  algorithmType: AlgorithmType;
 }
 
-export default function ProcessCard({ process, setProcesses, index }: Props) {
+export default function ProcessCard({
+  process,
+  setProcesses,
+  index,
+  algorithmType,
+}: Props) {
   return (
     <div>
       <h2>Processo {process.processNumber}</h2>
@@ -45,29 +52,28 @@ export default function ProcessCard({ process, setProcesses, index }: Props) {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
-          <TextField
-            type="number"
-            label="Deadline"
-            value={process.deadline}
-            onChange={(e: any) => {
-              setProcesses((prev: IProcess[]) => [
-                ...prev.filter((_, i) => i !== index),
-                {
-                  ...prev[index],
-                  deadline: +e.target.value,
-                },
-              ]);
-            }}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            type="number"
-            label="Prioridade"
-          />
-        </Grid>
-        <Grid item xs={4}>
+        {algorithmType === AlgorithmType.edf && (
+          <Grid item xs={4}>
+            <TextField
+              type="number"
+              label="Deadline"
+              value={process.deadline}
+              onChange={(e: any) => {
+                setProcesses((prev: IProcess[]) => [
+                  ...prev.filter((_, i) => i !== index),
+                  {
+                    ...prev[index],
+                    deadline: +e.target.value,
+                  },
+                ]);
+              }}
+            />
+          </Grid>
+        )}
+        {/* <Grid item xs={4}>
+          <TextField type="number" label="Prioridade" />
+        </Grid> */}
+        {/* <Grid item xs={4}>
           <TextField
             type="number"
             label="Paginas Memoria"
@@ -81,7 +87,7 @@ export default function ProcessCard({ process, setProcesses, index }: Props) {
               ]);
             }}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );
