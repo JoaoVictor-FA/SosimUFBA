@@ -1,5 +1,4 @@
 export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
-    console.log(memoryPages)
     while(memoryPages > 0){
         memoria.map( e =>{
             if(memoryPages > 0){
@@ -55,7 +54,6 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
         if(memoryPages = 0){
             break
         }
-        console.log(memoria)
     }
     
     return memoria

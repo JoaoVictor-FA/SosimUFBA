@@ -60,6 +60,7 @@ function App() {
   memoria = memoryPush({processNumber: 11, memoryPages: 2}, memoria)
   memoria = memoryPush({processNumber: 12, memoryPages: 10}, memoria)
   memoria = memoryPush({processNumber: 13, memoryPages: 10}, memoria)
+  console.log(memoria)
   
 
   const handleClick = () => {
