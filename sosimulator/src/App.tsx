@@ -47,25 +47,35 @@ function App() {
   const [graphic, setGraphic] = useState(false);
   const [animated, setAnimated] = useState(false);
 
-  let memoria: any[] = [{processNumber: "Vazio", memoryPages: 50}]
-  memoria = memoryPush({processNumber: 1, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 2, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 3, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 4, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 5, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 6, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 8, memoryPages: 5}, memoria)
-  memoria = memoryPush({processNumber: 9, memoryPages: 2}, memoria)
-  memoria = memoryPush({processNumber: 10, memoryPages: 2}, memoria)
-  memoria = memoryPush({processNumber: 11, memoryPages: 2}, memoria)
-  memoria = memoryPush({processNumber: 12, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 13, memoryPages: 10}, memoria)
-  console.log(memoria)
-  
+  let memoria: any[] = [{ processNumber: "Vazio", memoryPages: 50 }];
+  memoria = memoryPush({ processNumber: 1, memoryPages: 10 }, memoria);
+  memoria = memoryPush({ processNumber: 2, memoryPages: 10 }, memoria);
+  memoria = memoryPush({ processNumber: 3, memoryPages: 10 }, memoria);
+  memoria = memoryPush({ processNumber: 4, memoryPages: 10 }, memoria);
+  memoria = memoryPush({ processNumber: 5, memoryPages: 10 }, memoria);
+  memoria = memoryPush({ processNumber: 6, memoryPages: 10 }, memoria);
+  memoria = memoryPush({ processNumber: 8, memoryPages: 5 }, memoria);
+  memoria = memoryPush({ processNumber: 9, memoryPages: 2 }, memoria);
+  memoria = memoryPush({ processNumber: 10, memoryPages: 2 }, memoria);
+  memoria = memoryPush({ processNumber: 11, memoryPages: 2 }, memoria);
+  memoria = memoryPush({ processNumber: 12, memoryPages: 10 }, memoria);
+  memoria = memoryPush({ processNumber: 13, memoryPages: 10 }, memoria);
+  /* console.log(memoria) */
 
-  const handleClick = () => {
+  console.log(
+    "fifo",
+    fifo(processes.sort((a, b) => a.arrivalTime - b.arrivalTime))
+  );
+
+  const convertDataToGraphic = () => {
     let res = null;
     let arr = [];
+    if (processes.find((p) => p.arrivalTime === 0) === undefined) {
+      alert("Algum processo precisa chegar no tempo 0");
+      processes.sort(
+        (a, b) => a.arrivalTime - b.arrivalTime
+      )[0].arrivalTime = 0;
+    }
     switch (algorithm) {
       case "fifo":
         res = fifo(processes.sort((a, b) => a.arrivalTime - b.arrivalTime));
@@ -341,7 +351,7 @@ function App() {
         ))}
       <Button
         disabled={btnDisabled}
-        onClick={handleClick}
+        onClick={convertDataToGraphic}
         style={{ margin: "5px" }}
       >
         Iniciar
