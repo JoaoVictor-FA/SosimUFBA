@@ -84,8 +84,8 @@ function App() {
           arr.push({
             processNumber: r.processNumber,
             result: Array.from(Array(r.end).keys())
-              .fill(0, 0, r.waitTime)
-              .fill(2, r.waitTime, r.start)
+              .fill(0, 0, r.arrivalTime)
+              .fill(2, r.arrivalTime, r.start)
               .fill(1, r.start, r.end),
           });
         });
@@ -97,8 +97,8 @@ function App() {
           arr.push({
             processNumber: r.processNumber,
             result: Array.from(Array(r.end).keys())
-              .fill(0, 0, r.waitTime)
-              .fill(2, r.waitTime, r.start)
+              .fill(0, 0, r.arrivalTime)
+              .fill(2, r.arrivalTime, r.start)
               .fill(1, r.start, r.end),
           });
         });

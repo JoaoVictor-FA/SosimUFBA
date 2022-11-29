@@ -37,12 +37,14 @@ export function fifo(processes: IProcess[]) {
       if (!process) {
         continue;
       }
+      const waitTime = time - process.arrivalTime;
       result.push({
         processNumber: +process.processNumber,
         start: +time,
         end: +time + +process.executionTime,
-        totalExecutionTime: +process.executionTime + process.arrivalTime,
-        waitTime: +process.arrivalTime,
+        totalExecutionTime: +process.executionTime + waitTime,
+        waitTime: +waitTime,
+        arrivalTime: +process.arrivalTime,
       });
       time += +process.executionTime;
     } else {
@@ -74,12 +76,14 @@ export function sjf(processes: IProcess[]) {
       if (!process) {
         continue;
       }
+      let waitTime = time - process.arrivalTime;
       result.push({
         processNumber: +process.processNumber,
         start: +time,
         end: +time + +process.executionTime,
-        totalExecutionTime: +process.executionTime + process.arrivalTime,
-        waitTime: +process.arrivalTime,
+        totalExecutionTime: +process.executionTime + waitTime,
+        waitTime: +waitTime,
+        arrivalTime: +process.arrivalTime,
       });
       time += +process.executionTime;
     } else {
