@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import { IGraphicData } from "../App";
 
 function getColor(id: number) {
   switch (id) {
@@ -35,7 +36,13 @@ function getLabelById(id: number) {
   }
 }
 
-export default function Graphic({ data, onClose, animated }: any) {
+interface IProps {
+  animated: boolean;
+  onClose: () => void;
+  data: IGraphicData;
+}
+
+export default function Graphic({ data, onClose, animated }: IProps) {
   return (
     <div
       style={{
@@ -46,7 +53,7 @@ export default function Graphic({ data, onClose, animated }: any) {
     >
       <button onClick={onClose}>Voltar</button>
       Tempo médio de turnaround: {data.averageTurnaroundTime.toFixed(2)}
-      <div style={{ position: "relative", width: 'max-content' }}>
+      <div style={{ position: "relative", width: "max-content" }}>
         {animated && <div className="slide" />}
         {data.result
           .sort((a, b) => b.processNumber - a.processNumber)
@@ -76,7 +83,7 @@ export default function Graphic({ data, onClose, animated }: any) {
                           border: "1px solid black",
                         }}
                       >
-                        {i == d.result.indexOf(3) ? "D" : null}
+                        {i == d?.deadline ? "D" : null}
                       </div>
                     );
                   })}

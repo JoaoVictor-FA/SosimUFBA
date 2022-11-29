@@ -1,17 +1,5 @@
 import { IProcess } from "../App";
 
-interface IComputedProcess {
-  waitingTime: number;
-  startTime: number;
-  endTime: number;
-  turnAroundTime: number;
-  totalOverloaded: number;
-  executionTime: number;
-  processNumber: number;
-  alreadyExecuted: number;
-  arrivalTime: number;
-}
-
 export enum AlgorithmType {
   fifo = "fifo",
   sjf = "sjf",
@@ -61,7 +49,7 @@ export function fifo(processes: IProcess[]) {
 }
 
 export function sjf(processes: IProcess[]) {
-  const queue: IComputedProcess[] = [];
+  const queue = [];
   let time = 0;
   let result = [];
   let i = 0;

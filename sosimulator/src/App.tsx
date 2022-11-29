@@ -36,6 +36,17 @@ export interface IProcess {
   intervals: Interval[];
 }
 
+export interface IGraphicData {
+  averageTurnaroundTime: number;
+  result: IResult[];
+}
+
+interface IResult {
+  processNumber: number;
+  result: number[];
+  deadline?: number;
+}
+
 function App() {
   const [processNumber, setProcessNumber] = useState(0);
   const [quantum, setQuantum] = useState(0);
@@ -69,7 +80,7 @@ function App() {
 
   const convertDataToGraphic = () => {
     let res = null;
-    let arr = [];
+    let arr: IResult[] = [];
     if (processes.find((p) => p.arrivalTime === 0) === undefined) {
       alert("Algum processo precisa chegar no tempo 0");
       processes.sort(
@@ -116,10 +127,12 @@ function App() {
 
           r.intervals.forEach((interval: Interval, i: number) => {
             if (i < r.intervals.length - 1) {
-              if (r.intervals[i + 1].start !== interval.end) {
+              if (interval.end && r.intervals[i + 1].start !== interval.end) {
                 const diff = r.intervals[i + 1].start - interval.end;
                 notProcessedPositions.push(
-                  ...Array.from(Array(diff).keys()).map((n) => n + interval.end)
+                  ...Array.from(Array(diff).keys()).map(
+                    (n) => n + (interval.end !== undefined ? interval.end : 0)
+                  )
                 );
               }
             }
@@ -170,6 +183,7 @@ function App() {
           arr.push({
             processNumber: r.processNumber,
             result,
+            deadline: trueDeadline,
           });
         });
         break;
@@ -183,10 +197,12 @@ function App() {
 
           r.intervals.forEach((interval: Interval, i: number) => {
             if (i < r.intervals.length - 1) {
-              if (r.intervals[i + 1].start !== interval.end) {
+              if (interval.end && r.intervals[i + 1].start !== interval.end) {
                 const diff = r.intervals[i + 1].start - interval.end;
                 notProcessedPositions.push(
-                  ...Array.from(Array(diff).keys()).map((n) => n + interval.end)
+                  ...Array.from(Array(diff).keys()).map(
+                    (n) => n + (interval.end !== undefined ? interval.end : 0)
+                  )
                 );
               }
             }
@@ -261,6 +277,10 @@ function App() {
         arrivalTime: 0,
         executionTime: 0,
         deadline: 0,
+        remainingTime: 0,
+        intervals: [],
+        overDeadline: false,
+        timeFinished: 0,
       });
     }
     setProcesses(newProcesses);
@@ -329,6 +349,7 @@ function App() {
           <InputLabel>Algoritmo</InputLabel>
           <Select
             value={algorithm}
+            // @ts-ignore
             onChange={(e: any) => setAlgorithm(AlgorithmType[e.target.value])}
             fullWidth
           >
