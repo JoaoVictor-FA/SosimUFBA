@@ -16,17 +16,14 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
                             memoria.unshift({processNumber, memoryPages})
                         }
                         memoryPages = 0
-                    }else{
-                        if(e.memoryPages < memoryPages){
-                            memoryPages -= e.memoryPages
-                            if((memoria.indexOf(e) -1)> 0){
-                                memoria.splice((memoria.indexOf(e) -1), 0, {processNumber, memoryPages})
-                            }else{
-                                memoria.unshift({processNumber, memoryPages})
-                            }
-                            memoria.splice(memoria.indexOf(e), 1)
-                            
+                    }else if(e.memoryPages < memoryPages){
+                        memoryPages -= e.memoryPages
+                        if((memoria.indexOf(e) -1)> 0){
+                            memoria.splice((memoria.indexOf(e) -1), 0, {processNumber, memoryPages: e.memoryPages})
+                        }else{
+                            memoria.unshift({processNumber, memoryPages: e.memoryPages})
                         }
+                        memoria.splice(memoria.indexOf(e), 1)
                     }
                 }
             }
