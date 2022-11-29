@@ -16,6 +16,7 @@ import {
   roundRobin,
   sjf,
 } from "./algorithms/algorithms";
+import { memoryPush } from "./algorithms/memory";
 import "./App.css";
 import Graphic from "./components/Graphic";
 import ProcessCard from "./components/ProcessCard";
@@ -50,14 +51,16 @@ function App() {
   memoria = memoryPush({processNumber: 1, memoryPages: 10}, memoria)
   memoria = memoryPush({processNumber: 2, memoryPages: 10}, memoria)
   memoria = memoryPush({processNumber: 3, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 4, memoryPages: 1}, memoria)
-  memoria = memoryPush({processNumber: 5, memoryPages: 5}, memoria)
-  memoria = memoryPush({processNumber: 6, memoryPages: 5}, memoria)
-  memoria = memoryPush({processNumber: 7, memoryPages: 5}, memoria)
+  memoria = memoryPush({processNumber: 4, memoryPages: 10}, memoria)
+  memoria = memoryPush({processNumber: 5, memoryPages: 10}, memoria)
+  memoria = memoryPush({processNumber: 6, memoryPages: 10}, memoria)
   memoria = memoryPush({processNumber: 8, memoryPages: 5}, memoria)
   memoria = memoryPush({processNumber: 9, memoryPages: 2}, memoria)
   memoria = memoryPush({processNumber: 10, memoryPages: 2}, memoria)
   memoria = memoryPush({processNumber: 11, memoryPages: 2}, memoria)
+  // memoria = memoryPush({processNumber: 10, memoryPages: 2}, memoria)
+  // memoria = memoryPush({processNumber: 11, memoryPages: 2}, memoria)
+  
 
   const handleClick = () => {
     let res = null;
