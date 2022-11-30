@@ -38,7 +38,7 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
             }
         }
         let e = memoria.find(x => x.processNumber == min)
-        console.log(e)
+        // console.log(e)
         // memoria.slice(0).reverse().map( e =>{
             if(memoryPages > 0){
                 if(e.memoryPages > memoryPages){
