@@ -31,7 +31,15 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
                 }
             }
         })
-        memoria.slice(0).reverse().map( e =>{
+        let min = Number.POSITIVE_INFINITY
+        for (const value of memoria) {
+            if(value.processNumber  != 'Vazio'){
+                min = Math.min(min, value.processNumber )
+            }
+        }
+        let e = memoria.find(x => x.processNumber == min)
+        console.log(e)
+        // memoria.slice(0).reverse().map( e =>{
             if(memoryPages > 0){
                 if(e.memoryPages > memoryPages){
                     let liberada = e.memoryPages
@@ -54,7 +62,7 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
                     memoryPages -= liberada
                 }
             }
-        })
+        // })
         if(memoryPages = 0){
             break
         }
