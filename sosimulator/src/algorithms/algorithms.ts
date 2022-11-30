@@ -11,16 +11,18 @@ export function fifo(processes: IProcess[]) {
   const queue = [];
   let time = 0;
   let result = [];
-  let contadorProcessos = 0;
-  while (contadorProcessos < processes.length || queue.length > 0) {
+  let processCounter = 0;
+  while (processCounter < processes.length || queue.length > 0) {
     if (
-      contadorProcessos < processes.length &&
-      processes[contadorProcessos].arrivalTime <= time
+      processCounter < processes.length &&
+      processes[processCounter].arrivalTime <= time
     ) {
-      queue.push(processes[contadorProcessos]);
-      contadorProcessos++;
+      //Adiciona processo na fila e incrementa o contador
+      queue.push(processes[processCounter]);
+      processCounter++;
     }
     if (queue.length > 0) {
+      //Retira o processo do início da fila e realiza o processamento, incrementando o tempo ao final
       const process = queue.shift();
       if (!process) {
         continue;
@@ -36,7 +38,7 @@ export function fifo(processes: IProcess[]) {
       });
       time += +process.executionTime;
     } else {
-      time = +processes[contadorProcessos].arrivalTime;
+      time = +processes[processCounter].arrivalTime;
     }
   }
   result = result.sort((a, b) => a.processNumber - b.processNumber);
@@ -52,14 +54,17 @@ export function sjf(processes: IProcess[]) {
   const queue = [];
   let time = 0;
   let result = [];
-  let i = 0;
-  while (i < processes.length || queue.length > 0) {
-    while (i < processes.length && processes[i].arrivalTime <= time) {
-      queue.push(processes[i]);
-      i++;
+  let processCounter = 0;
+  while (processCounter < processes.length || queue.length > 0) {
+    //Adiciona processo na fila e incrementa o contador
+    while (processCounter < processes.length && processes[processCounter].arrivalTime <= time) {
+      queue.push(processes[processCounter]);
+      processCounter++;
     }
+    //Ordena a fila atual de acordo com o tempo de execução necessário
     queue.sort((a, b) => a.executionTime - b.executionTime);
     if (queue.length > 0) {
+      //Retira o processo do início da fila e realiza o processamento, incrementando o tempo ao final
       const process = queue.shift();
       if (!process) {
         continue;
@@ -75,7 +80,7 @@ export function sjf(processes: IProcess[]) {
       });
       time += +process.executionTime;
     } else {
-      time = +processes[i].arrivalTime;
+      time = +processes[processCounter].arrivalTime;
     }
   }
   result = result.sort((a, b) => a.processNumber - b.processNumber);
