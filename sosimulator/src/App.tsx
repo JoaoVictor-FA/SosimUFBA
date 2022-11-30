@@ -11,10 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import {
   AlgorithmType,
-  edf,
-  fifo,
-  roundRobin,
-  sjf,
 } from "./algorithms/algorithms";
 import { memoryPush } from "./algorithms/memory";
 import "./App.css";
