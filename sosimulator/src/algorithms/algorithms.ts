@@ -1,17 +1,5 @@
 import { IProcess } from "../App";
 
-interface IComputedProcess {
-  waitingTime: number;
-  startTime: number;
-  endTime: number;
-  turnAroundTime: number;
-  totalOverloaded: number;
-  executionTime: number;
-  processNumber: number;
-  alreadyExecuted: number;
-  arrivalTime: number;
-}
-
 export enum AlgorithmType {
   fifo = "fifo",
   sjf = "sjf",
@@ -37,13 +25,14 @@ export function fifo(processes: IProcess[]) {
       if (!process) {
         continue;
       }
-      let waitTime = time - process.arrivalTime;
+      const waitTime = time - process.arrivalTime;
       result.push({
         processNumber: +process.processNumber,
         start: +time,
         end: +time + +process.executionTime,
         totalExecutionTime: +process.executionTime + waitTime,
         waitTime: +waitTime,
+        arrivalTime: +process.arrivalTime,
       });
       time += +process.executionTime;
     } else {
@@ -60,7 +49,7 @@ export function fifo(processes: IProcess[]) {
 }
 
 export function sjf(processes: IProcess[]) {
-  const queue: IComputedProcess[] = [];
+  const queue = [];
   let time = 0;
   let result = [];
   let i = 0;
@@ -82,6 +71,7 @@ export function sjf(processes: IProcess[]) {
         end: +time + +process.executionTime,
         totalExecutionTime: +process.executionTime + waitTime,
         waitTime: +waitTime,
+        arrivalTime: +process.arrivalTime,
       });
       time += +process.executionTime;
     } else {
