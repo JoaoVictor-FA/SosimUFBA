@@ -73,7 +73,7 @@ export default function ProcessCard({
         {/* <Grid item xs={4}>
           <TextField type="number" label="Prioridade" />
         </Grid> */}
-        {/* <Grid item xs={4}>
+        <Grid item xs={4}>
           <TextField
             type="number"
             label="Paginas Memoria"
@@ -87,7 +87,7 @@ export default function ProcessCard({
               ]);
             }}
           />
-        </Grid> */}
+        </Grid>
       </Grid>
     </div>
   );

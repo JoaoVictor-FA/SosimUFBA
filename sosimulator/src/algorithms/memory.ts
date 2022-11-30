@@ -5,20 +5,24 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
                 if(e.processNumber == 'Vazio'){
                     if(e.memoryPages > memoryPages){
                         e.memoryPages -= memoryPages
-                        memoria.unshift({processNumber, memoryPages})
-                        memoryPages = 0
-                    }else if(e.memoryPages == memoryPages){
-                        memoria.splice(memoria.indexOf(e), 1)
-                        if((memoria.indexOf(e) -1)> 0){
-                            memoria.splice((memoria.indexOf(e) -1), 0, {processNumber, memoryPages})
+                        if((memoria.indexOf(e) -1) >= 0){
+                            memoria.splice((memoria.indexOf(e)), 0, {processNumber, memoryPages})
                         }else{
                             memoria.unshift({processNumber, memoryPages})
                         }
                         memoryPages = 0
+                    }else if(e.memoryPages == memoryPages){
+                        if((memoria.indexOf(e) -1)>= 0){
+                            memoria.splice((memoria.indexOf(e)), 0, {processNumber, memoryPages})
+                        }else{
+                            memoria.unshift({processNumber, memoryPages})
+                        }
+                        memoria.splice(memoria.indexOf(e), 1)
+                        memoryPages = 0
                     }else if(e.memoryPages < memoryPages){
                         memoryPages -= e.memoryPages
-                        if((memoria.indexOf(e) -1)> 0){
-                            memoria.splice((memoria.indexOf(e) -1), 0, {processNumber, memoryPages: e.memoryPages})
+                        if((memoria.indexOf(e) -1)>= 0){
+                            memoria.splice((memoria.indexOf(e)), 0, {processNumber, memoryPages: e.memoryPages})
                         }else{
                             memoria.unshift({processNumber, memoryPages: e.memoryPages})
                         }
@@ -42,8 +46,8 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
                 }else{
                     let liberada = e.memoryPages
                     memoria.pop()
-                    if((memoria.indexOf(e) -1)> 0){
-                        memoria.splice((memoria.indexOf(e) -1), 0, {processNumber, memoryPages:(memoryPages - liberada)})
+                    if((memoria.indexOf(e) -1)>= 0){
+                        memoria.splice((memoria.indexOf(e)), 0, {processNumber, memoryPages:(memoryPages - liberada)})
                     }else{
                         memoria.unshift({processNumber, memoryPages:(memoryPages - liberada)})
                     }

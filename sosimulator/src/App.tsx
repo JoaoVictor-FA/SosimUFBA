@@ -52,16 +52,18 @@ function App() {
   memoria = memoryPush({processNumber: 2, memoryPages: 10}, memoria)
   memoria = memoryPush({processNumber: 3, memoryPages: 10}, memoria)
   memoria = memoryPush({processNumber: 4, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 5, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 6, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 8, memoryPages: 5}, memoria)
-  memoria = memoryPush({processNumber: 9, memoryPages: 2}, memoria)
-  memoria = memoryPush({processNumber: 10, memoryPages: 2}, memoria)
-  memoria = memoryPush({processNumber: 11, memoryPages: 2}, memoria)
-  memoria = memoryPush({processNumber: 12, memoryPages: 10}, memoria)
-  memoria = memoryPush({processNumber: 13, memoryPages: 10}, memoria)
+  // memoria = memoryPush({processNumber: 5, memoryPages: 10}, memoria)
+  // memoria = memoryPush({processNumber: 6, memoryPages: 10}, memoria)
+  // memoria = memoryPush({processNumber: 8, memoryPages: 5}, memoria)
+  // memoria = memoryPush({processNumber: 9, memoryPages: 2}, memoria)
+  // memoria = memoryPush({processNumber: 10, memoryPages: 2}, memoria)
+  // memoria = memoryPush({processNumber: 11, memoryPages: 2}, memoria)
+  // memoria = memoryPush({processNumber: 12, memoryPages: 10}, memoria)
+  // memoria = memoryPush({processNumber: 13, memoryPages: 10}, memoria)
+  // memoria = memoryPush({processNumber: 14, memoryPages: 2}, memoria)
   console.log(memoria)
-  
+  console.log(processes)
+  processes.map( e => memoryPush(e, memoria))
 
   const handleClick = () => {
     let res = null;
