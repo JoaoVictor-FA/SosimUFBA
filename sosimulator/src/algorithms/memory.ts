@@ -52,15 +52,15 @@ export function memoryPush({processNumber, memoryPages}: any, memoria: any[]){
             }else{
                 let liberada = e.memoryPages
                 if((memoria.indexOf(e) -1)>= 0){
-                    memoria.splice((memoria.indexOf(e)), 0, {processNumber, memoryPages:(memoryPages - liberada)})
+                    memoria.splice((memoria.indexOf(e)), 0, {processNumber, memoryPages:(liberada)})
                 }else{
-                    memoria.unshift({processNumber, memoryPages:(memoryPages - liberada)})
+                    memoria.unshift({processNumber, memoryPages:(liberada)})
                 }
                 memoria.splice(memoria.indexOf(e), 1)
                 memoryPages -= liberada
             }
         }
-        if(memoryPages = 0){
+        if(memoryPages == 0){
             break
         }
     }
